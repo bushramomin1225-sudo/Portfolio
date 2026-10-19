@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Bushra Momin">
+<meta property="og:description" content="Computer Science student building WhatsApp bots and full-stack web apps.">
+<meta name="theme-color" content="#12142E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2312142E'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='800' font-size='30' text-anchor='middle' fill='%23FF7A5C'%3EBM%3C/text%3E%3C/svg%3E">
+<title>Bushra Momin</title>
+<meta name="description" content="Bushra Momin, Computer Science student building WhatsApp bots and full-stack web apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: dark green hero band with a live chat mockup, then a light page with a featured project, a 3-up project row, skills and contact */
+:root{
+  --bg:#F6F6FB;
+  --surface:#FFFFFF;
+  --fg:#141632;
+  --muted:#5D6080;
+  --line:#E2E2EE;
+  --accent:#D9432F;
+  --accent-soft:#FDE8E3;
+  --mark:#FF7A5C;
+  --band:#12142E;
+  --band-fg:#EEF0FF;
+  --band-muted:#A9ADD6;
+  --bubble-in:#262B5C;
+  --bubble-out:#FFE3DB;
+  --bubble-out-fg:#2A1410;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C0E1F; --surface:#15182F; --fg:#ECEEFB; --muted:#A0A4C8; --line:#262A48;
+    --accent:#FF8A70; --accent-soft:#2E1D2C; --mark:#FF7A5C;
+    --band:#090B1A; --band-fg:#EEF0FF; --band-muted:#A0A4C8; --bubble-in:#22264F;
+    --bubble-out:#5A2C24; --bubble-out-fg:#FFEDE8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C0E1F; --surface:#15182F; --fg:#ECEEFB; --muted:#A0A4C8; --line:#262A48;
+  --accent:#FF8A70; --accent-soft:#2E1D2C; --mark:#FF7A5C;
+  --band:#090B1A; --band-fg:#EEF0FF; --band-muted:#A0A4C8; --bubble-in:#22264F;
+  --bubble-out:#5A2C24; --bubble-out-fg:#FFEDE8;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16.5px;line-height:1.6;margin:0;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--band)}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--mark);outline-offset:3px;border-radius:6px}
+.gutter{padding-left:max(18px, env(safe-area-inset-left,0px));padding-right:max(18px, env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto}
+
+/* ---------- nav ---------- */
+.nav{transition:transform .35s ease;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--band);color:var(--band-fg);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-family:var(--display);font-weight:800;font-size:1.2rem;text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--mark)}
+.menu{list-style:none;display:flex;gap:26px;margin:0;padding:0;align-items:center}
+.menu a{text-decoration:none;font-size:.94rem;font-weight:500;color:var(--band-muted);transition:color .15s}
+.menu a:hover{color:var(--band-fg)}
+.menu .pill{color:var(--band);background:var(--mark);padding:8px 16px;border-radius:999px;font-weight:600}
+.menu .pill:hover{color:var(--band)}
+.burger{display:none;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--band-fg);border-radius:10px;width:44px;height:40px;cursor:pointer;align-items:center;justify-content:center}
+.burger svg{width:20px;height:20px}
+
+/* ---------- hero ---------- */
+.hero{background:var(--band);color:var(--band-fg);position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(600px 380px at 85% 30%, rgba(125,140,255,.22), transparent 70%),
+    radial-gradient(500px 300px at 10% 110%, rgba(255,122,92,.14), transparent 70%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(to bottom, #000 40%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, #000 40%, transparent);
+}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr);gap:56px;align-items:center;padding-block:80px 88px}
+.eyebrow{font-family:var(--mono);font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mark);display:inline-flex;align-items:center;gap:10px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:#8B93FF;box-shadow:0 0 0 0 rgba(125,140,255,.6);animation:ping 2.2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(125,140,255,.6)}70%{box-shadow:0 0 0 10px rgba(125,140,255,0)}100%{box-shadow:0 0 0 0 rgba(125,140,255,0)}}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,6.6vw,4.9rem);line-height:.98;letter-spacing:-.035em;margin:18px 0 22px;text-wrap:balance}
+h1 .hl{color:var(--band);background:var(--mark);padding:0 .14em;border-radius:.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.lede{font-size:1.15rem;color:var(--band-muted);max-width:56ch;margin:0}
+.lede strong{color:var(--band-fg);font-weight:600}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 .96rem var(--body);text-decoration:none;padding:13px 22px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--mark);color:#12142E;box-shadow:0 8px 24px -10px rgba(255,122,92,.7)}
+.btn.line{border-color:rgba(255,255,255,.28);color:var(--band-fg)}
+.btn.line:hover{border-color:var(--band-fg)}
+.btn.dark{background:var(--fg);color:var(--bg)}
+.btn svg{width:18px;height:18px}
+.stats{display:flex;gap:34px;flex-wrap:wrap;margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+.stats div{display:grid;gap:2px}
+.stats b{font-family:var(--display);font-size:1.9rem;font-weight:700;letter-spacing:-.02em;line-height:1}
+.stats span{font-size:.85rem;color:var(--band-muted)}
+
+/* phone mockup */
+.phone{justify-self:center;width:100%;max-width:330px;background:#0A0C1E;border-radius:34px;padding:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08);transform:rotate(2.5deg);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:rotate(2.5deg) translateY(0)}50%{transform:rotate(2.5deg) translateY(-10px)}}
+.screen{background:#111430;border-radius:24px;overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#1C2050;color:#EAF4EE}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--mark);color:#12142E;display:grid;place-items:center;font:800 .85rem var(--display)}
+.chat-head b{display:block;font-size:.92rem;line-height:1.2}
+.chat-head small{font-size:.74rem;color:#A9ADD6}
+.chat{padding:16px 12px 18px;display:grid;gap:10px;background-image:radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);background-size:14px 14px}
+.msg{max-width:86%;padding:9px 12px 6px;border-radius:12px;font-size:.84rem;line-height:1.45;opacity:0;animation:pop .45s ease forwards}
+.msg.in{background:var(--bubble-in);color:#EEF0FF;border-top-left-radius:3px}
+.msg.out{background:var(--bubble-out);color:var(--bubble-out-fg);justify-self:end;border-top-right-radius:3px}
+.msg .t{display:block;text-align:right;font-size:.66rem;opacity:.6;margin-top:2px}
+.msg:nth-child(1){animation-delay:.3s}
+.msg:nth-child(2){animation-delay:1.1s}
+.msg:nth-child(3){animation-delay:1.9s}
+.msg:nth-child(4){animation-delay:2.7s}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font:500 .68rem var(--mono);background:rgba(255,122,92,.18);color:#FF9A80;padding:1px 6px;border-radius:4px;margin-bottom:4px}
+
+/* ---------- sections ---------- */
+section{padding-block:80px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+.kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.6vw,3rem);letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance}
+.sec-note{color:var(--muted);margin:0;max-width:42ch}
+
+/* featured project */
+.featured{background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);box-shadow:0 24px 48px -32px rgba(18,20,46,.35)}
+.featured .info{padding:36px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kind{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.status{font-family:var(--mono);font-size:.72rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+h3{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:-.02em;margin:0;line-height:1.15;text-wrap:balance}
+.featured h3{font-size:clamp(1.7rem,3.4vw,2.2rem)}
+.info p{margin:0;color:var(--muted)}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.checks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
+.checks li::before{content:"";width:18px;height:18px;margin-top:3px;border-radius:50%;background:var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D9432F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/11px no-repeat}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
+.stack span{font-family:var(--mono);font-size:.76rem;padding:4px 10px;border:1px solid var(--line);border-radius:6px}
+
+/* form mockup */
+.mock{background:linear-gradient(150deg, #FF7A5C 0%, #C2405F 45%, #12142E 100%);padding:36px;display:grid;place-items:center;min-width:0}
+.form-card{background:var(--surface);color:var(--fg);width:100%;max-width:360px;border-radius:16px;padding:22px;box-shadow:0 20px 40px -18px rgba(0,0,0,.5);display:grid;gap:16px}
+.appid{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--mono);font-size:.76rem;color:var(--muted);flex-wrap:wrap}
+.appid b{color:var(--fg);font-weight:500;background:var(--accent-soft);padding:2px 8px;border-radius:5px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.steps i{height:6px;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--accent)}
+.form-card h4{margin:0;font-family:var(--display);font-size:1.05rem}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;font-size:.83rem;font-weight:500}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.fake-btn{background:var(--fg);color:var(--bg);border-radius:10px;padding:10px;text-align:center;font-weight:600;font-size:.88rem}
+
+/* project row */
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease}
+.card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 18px 36px -24px rgba(18,20,46,.45)}
+.card p{margin:0;color:var(--muted)}
+.ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.ico svg{width:24px;height:24px}
+
+/* skills */
+.skills-band{background:var(--surface);border-block:1px solid var(--line)}
+.skills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.skill{border-top:3px solid var(--accent);padding-top:16px}
+.skill h4{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-weight:500;font-size:.92rem;padding:6px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:start}
+.about p{margin:0 0 16px;color:var(--muted);font-size:1.08rem;max-width:62ch}
+.about p strong{color:var(--fg)}
+
+/* contact */
+.contact{background:var(--band);color:var(--band-fg);border-radius:28px;padding:56px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;position:relative;overflow:hidden}
+.contact::before{content:"";position:absolute;width:420px;height:420px;right:-120px;top:-160px;border-radius:50%;background:radial-gradient(circle, rgba(255,122,92,.25), transparent 65%);pointer-events:none}
+.contact h2{color:var(--band-fg)}
+.contact p{color:var(--band-muted);margin:16px 0 0;max-width:46ch}
+.clist{list-style:none;margin:0;padding:0;display:grid;gap:12px;position:relative}
+.clist li{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;flex-wrap:wrap}
+.clist .ci{width:40px;height:40px;border-radius:10px;background:var(--mark);color:#12142E;display:grid;place-items:center;flex:none}
+.clist .ci svg{width:20px;height:20px}
+.clist .txt{flex:1;min-width:0}
+.clist small{display:block;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--band-muted)}
+.clist .val{font-weight:600;overflow-wrap:anywhere;text-decoration:none}
+.clist a.val:hover{text-decoration:underline}
+.copy{font:500 .8rem var(--mono);background:transparent;border:1px solid rgba(255,255,255,.25);color:var(--band-fg);border-radius:8px;padding:6px 12px;cursor:pointer}
+.copy:hover{border-color:var(--band-fg)}
+
+footer{padding-block:28px 40px;color:var(--muted);font-size:.88rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+
+/* scroll behaviour */
+.nav.hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))}
+.reveal{transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.out{opacity:0;transform:translateY(36px)}
+.reveal.out.from-left{transform:translateX(-40px)}
+.reveal.out.zoom{transform:scale(.94) translateY(24px)}
+.to-top{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:25;width:46px;height:46px;border-radius:50%;border:0;background:var(--mark);color:#12142E;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px -8px rgba(255,122,92,.7);transition:opacity .3s, transform .3s}
+.to-top.out{opacity:0;transform:translateY(16px);pointer-events:none}
+.to-top svg{width:20px;height:20px}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr);gap:48px;padding-block:56px 64px}
+  .phone{max-width:300px}
+  .featured{grid-template-columns:minmax(0,1fr)}
+  .row3{grid-template-columns:minmax(0,1fr)}
+  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .about{grid-template-columns:minmax(0,1fr);gap:20px}
+  .contact{grid-template-columns:minmax(0,1fr);padding:36px 24px}
+}
+@media (max-width:720px){
+  .burger{display:inline-flex}
+  .menu{position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--band);border-bottom:1px solid rgba(255,255,255,.1);padding:8px max(18px, env(safe-area-inset-right,0px)) 18px max(18px, env(safe-area-inset-left,0px));display:none}
+  .menu.open{display:flex}
+  .menu a{display:block;padding:14px 4px;font-size:1.05rem;border-bottom:1px solid rgba(255,255,255,.06)}
+  .menu li:last-child a{border:0;margin-top:12px;text-align:center}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  section{padding-block:56px}
+  .lede{font-size:1.05rem}
+  .cta .btn{flex:1 1 100%}
+  .stats{gap:22px}
+  .stats b{font-size:1.6rem}
+  .featured .info,.mock{padding:24px}
+  .card{padding:22px}
+  .skills{grid-template-columns:minmax(0,1fr)}
+  .phone{transform:none;animation:none}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .msg{opacity:1}
+  .reveal.out{opacity:1;transform:none}
+  .phone{transform:rotate(2.5deg)}
+}
+</style>
+</head>
+<body>
+
+
+<header class="nav gutter">
+  <div class="wrap" style="position:relative">
+    <a class="logo" href="#top">bushra<span>.</span>momin</a>
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <ul class="menu" id="menu">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a class="pill" href="#contact">Contact me</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="hero gutter" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><i></i>Computer Science student · open to work</span>
+      <h1>Hi, I'm Bushra. I build apps that reach people <span class="hl">where they already are.</span></h1>
+      <p class="lede">I design and build <strong>WhatsApp bots</strong> and <strong>full-stack web apps</strong> for parents, field workers and small institutions. I care about simple flows, local languages and software that is cheap to run.</p>
+      <div class="cta">
+        <a class="btn primary" href="#work">See my work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn line" href="https://www.linkedin.com/in/bushra-momin-7a637741a" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="stats">
+        <div><b>4</b><span>projects built</span></div>
+        <div><b>450</b><span>days of bot content planned</span></div>
+        <div><b>5th</b><span>semester, CSE</span></div>
+      </div>
+    </div>
+
+    <div class="phone" aria-label="Example WhatsApp conversation from the Super Savers program">
+      <div class="screen">
+        <div class="chat-head">
+          <div class="avatar">SS</div>
+          <div><b>Super Savers</b><small>online</small></div>
+        </div>
+        <div class="chat">
+          <div class="msg in"><span class="tag">DAY 1 · MISSION 1</span><br>Good morning! Today's mission takes just 5 minutes. Ready? 🌱<span class="t">7:00 am</span></div>
+          <div class="msg out">Haan, ready! 🙌<span class="t">7:02 am</span></div>
+          <div class="msg in">Find a quiet spot and write down one thing you want to change this year.<span class="t">7:02 am</span></div>
+          <div class="msg out">Done ✅<span class="t">7:09 am</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="gutter">
+  <div class="wrap">
+
+    <section id="work">
+      <div class="sec-head">
+        <div>
+          <p class="kicker">Selected work</p>
+          <h2>Things I've built</h2>
+        </div>
+        <p class="sec-note">Real problems, real users. Each project taught me something new about building software people actually use.</p>
+      </div>
+
+      <article class="featured">
+        <div class="info">
+          <div class="meta"><span class="kind">Web app · Full stack</span><span class="status">Built</span></div>
+          <h3>Tenant Verification Portal</h3>
+          <p>A police-verification system for hostels and PGs. Residents fill a guided multi-step form, owners and wardens manage their records, and admins export everything in the official format.</p>
+          <ul class="checks">
+            <li>Auto-generated Application IDs and full-detail PDF printouts</li>
+            <li>Separate flows for students, employees and foreign nationals</li>
+            <li>Security-hardened admin panel with CSV export</li>
+          </ul>
+          <div class="stack"><span>Laravel 12</span><span>PHP</span><span>MySQL</span><span>Blade</span></div>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <div class="form-card">
+            <div class="appid">Application ID <b>TP-2026-00127</b></div>
+            <div class="steps"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+            <h4>Step 2 · Resident type</h4>
+            <div class="opts">
+              <div class="opt sel">Student</div>
+              <div class="opt">Employed</div>
+              <div class="opt">Self-employed</div>
+              <div class="opt">Foreign national</div>
+            </div>
+            <div class="fake-btn">Continue</div>
+          </div>
+        </div>
+      </article>
+
+      <div class="row3">
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9 11h6M9 14h4"/></svg></div>
+          <div class="meta"><span class="kind">Freelance · System design</span></div>
+          <h3>Anganwadi Chatbot Ecosystem</h3>
+          <p>A WhatsApp platform connecting parents, Anganwadi and ASHA workers, preschool staff and admins. I designed the architecture, features and a six-phase delivery plan.</p>
+          <div class="stack"><span>Node.js</span><span>PostgreSQL</span><span>Angular</span><span>Ionic</span></div>
+        </article>
+
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4M8 14h3M8 17h6"/></svg></div>
+          <div class="meta"><span class="kind">WhatsApp program</span></div>
+          <h3>Super Savers</h3>
+          <p>A 450-day personal-growth journey on WhatsApp. Two messages a day, one reflection and one real-life task, written as short stories for each role and age group.</p>
+          <div class="stack"><span>WhatsApp</span><span>Content pipeline</span><span>Excel</span></div>
+        </article>
+
+        <article class="card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6M8 11h6"/></svg></div>
+          <div class="meta"><span class="kind">College mini project</span></div>
+          <h3>Online Library Management System</h3>
+          <p>A web system for managing a library online: book catalogue, members, and issuing and returning books. Submitted with a full project report.</p>
+          <div class="stack"><span>Web app</span><span>Database design</span></div>
+        </article>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="skills-band gutter" id="skills">
+  <div class="wrap">
+    <section>
+      <div class="sec-head">
+        <div>
+          <p class="kicker">Toolkit</p>
+          <h2>What I work with</h2>
+        </div>
+        <p class="sec-note">The tools I reach for most. I pick up new ones when a project needs them.</p>
+      </div>
+      <div class="skills">
+        <div class="skill"><h4>Languages</h4><div class="chips"><span>JavaScript</span><span>TypeScript</span><span>PHP</span><span>SQL</span></div></div>
+        <div class="skill"><h4>Backend</h4><div class="chips"><span>Node.js</span><span>Express</span><span>Laravel</span><span>Sequelize</span><span>REST APIs</span></div></div>
+        <div class="skill"><h4>Frontend</h4><div class="chips"><span>HTML</span><span>CSS</span><span>Angular</span><span>Ionic</span><span>Tailwind</span></div></div>
+        <div class="skill"><h4>Data &amp; platforms</h4><div class="chips"><span>PostgreSQL</span><span>MySQL</span><span>WhatsApp API</span><span>Git</span></div></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<main class="gutter">
+  <div class="wrap">
+    <section id="about">
+      <div class="about">
+        <div>
+          <p class="kicker">About</p>
+          <h2>A builder who starts with the user</h2>
+        </div>
+        <div>
+          <p>I'm <strong>Bushra Momin</strong>, a Computer Science student who likes building things that solve a real, specific problem.</p>
+          <p>My projects started with small questions. How does a hostel owner keep verification records without piles of paper? How do you send a parent one useful idea a day, in their own language, on the app they already use?</p>
+          <p>I enjoy the whole path: understanding the people involved, designing the data model, writing the code and shipping it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding-top:0">
+      <div class="contact">
+        <div style="position:relative">
+          <p class="kicker" style="color:var(--mark)">Contact</p>
+          <h2>Let's build something together</h2>
+          <p>I'm open to internships and freelance projects in web development and chatbots. Email is the fastest way to reach me.</p>
+        </div>
+        <ul class="clist">
+          <li>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+            <span class="txt"><small>Email</small><a class="val" id="email" href="mailto:bushramomin1225@gmail.com">bushramomin1225@gmail.com</a></span>
+            <button class="copy" type="button" id="copyEmail">Copy</button>
+          </li>
+          <li>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.95c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62V21h-4z"/></svg></span>
+            <span class="txt"><small>LinkedIn</small><a class="val" href="https://www.linkedin.com/in/bushra-momin-7a637741a" target="_blank" rel="noopener">in/bushra-momin</a></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Bushra Momin</span>
+      <span>Designed &amp; built by Bushra</span>
+    </footer>
+  </div>
+</main>
+
+<button class="to-top out" id="toTop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+
+<script>
+(function(){
+  var burger = document.getElementById('burger'), menu = document.getElementById('menu');
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') { menu.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  });
+
+  /* hide menu bar on scroll down, show on scroll up */
+  var nav = document.querySelector('.nav'), toTop = document.getElementById('toTop'), lastY = window.scrollY;
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY;
+    if (y > lastY && y > 120 && !menu.classList.contains('open')) nav.classList.add('hide');
+    else if (y < lastY) nav.classList.remove('hide');
+    toTop.classList.toggle('out', y < 600);
+    lastY = y;
+  }, {passive:true});
+  toTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  /* reveal sections as they scroll into view, in both directions */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window){
+    var groups = [
+      ['.sec-head', ''], ['.featured', 'zoom'], ['.row3 .card', ''], ['.skill', ''],
+      ['.about > div:first-child', 'from-left'], ['.about > div:last-child', ''], ['.contact', 'zoom']
+    ];
+    var items = [];
+    groups.forEach(function(g){
+      document.querySelectorAll(g[0]).forEach(function(el, i){
+        el.classList.add('reveal'); if (g[1]) el.classList.add(g[1]);
+        el.style.transitionDelay = (i * 0.12) + 's';
+        items.push(el);
+      });
+    });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ e.target.classList.toggle('out', !e.isIntersecting); });
+    }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    items.forEach(function(el){ io.observe(el); });
+  }
+  var btn = document.getElementById('copyEmail');
+  btn.addEventListener('click', function(){
+    var el = document.getElementById('email'), txt = el.textContent;
+    function selectText(){
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Selected';
+    }
+    try {
+      navigator.clipboard.writeText(txt).then(function(){
+        btn.textContent = 'Copied';
+        setTimeout(function(){ btn.textContent = 'Copy'; }, 1600);
+      }).catch(selectText);
+    } catch(e){ selectText(); }
+  });
+})();
+</script>
+
+</body>
+</html>
